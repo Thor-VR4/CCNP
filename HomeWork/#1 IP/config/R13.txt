@@ -1,6 +1,6 @@
 
 !
-! Last configuration change at 17:22:17 EET Wed Dec 23 2020
+! Last configuration change at 11:11:04 EET Thu Dec 24 2020
 !
 version 15.2
 service timestamps debug datetime msec
@@ -58,7 +58,7 @@ interface Ethernet0/0
  no shutdown
  description N7
  no switchport
- ip address 10.0.0.29 255.255.255.254
+ ip address 192.168.7.29 255.255.255.254
  ipv6 address FE80::13 link-local
 !
 interface Ethernet0/1

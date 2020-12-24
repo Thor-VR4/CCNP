@@ -1,8 +1,8 @@
 
 
 !Command: show running-config
-!Running configuration last done at: Wed Dec 23 15:39:57 2020
-!Time: Wed Dec 23 15:39:58 2020
+!Running configuration last done at: Thu Dec 24 09:33:35 2020
+!Time: Thu Dec 24 09:33:36 2020
 
 version 9.2(2) Bios:version  
 hostname NXOS7
@@ -33,7 +33,7 @@ interface Ethernet1/1
   description N3
   no switchport
   medium p2p
-  ip address 10.0.0.27/31
+  ip address 10.0.3.27/31
   ipv6 link-local fe80::7
   no shutdown
 
@@ -41,7 +41,7 @@ interface Ethernet1/2
   description R13
   no switchport
   medium p2p
-  ip address 10.0.0.28/31
+  ip address 192.168.7.28/31
   ipv6 link-local fe80::7
   no shutdown
 

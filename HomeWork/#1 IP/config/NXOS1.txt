@@ -1,8 +1,8 @@
 
 
 !Command: show running-config
-!Running configuration last done at: Wed Dec 23 15:38:26 2020
-!Time: Wed Dec 23 15:38:27 2020
+!Running configuration last done at: Thu Dec 24 09:32:56 2020
+!Time: Thu Dec 24 09:32:58 2020
 
 version 9.2(2) Bios:version  
 hostname NXOS1
@@ -34,7 +34,7 @@ interface Ethernet1/1
   description R8
   no switchport
   medium p2p
-  ip address 10.0.0.6/31
+  ip address 10.1.0.6/31
   ipv6 link-local fe80::1
   no shutdown
 
@@ -42,7 +42,7 @@ interface Ethernet1/2
   description NXOS6
   no switchport
   medium p2p
-  ip address 10.0.0.0/31
+  ip address 10.0.1.0/31
   ipv6 link-local fe80::1
   no shutdown
 
@@ -50,7 +50,7 @@ interface Ethernet1/3
   description NXOS4
   no switchport
   medium p2p
-  ip address 10.0.0.2/31
+  ip address 10.0.1.2/31
   ipv6 link-local fe80::1
   no shutdown
 
@@ -58,7 +58,7 @@ interface Ethernet1/4
   description NXOS5
   no switchport
   medium p2p
-  ip address 10.0.0.4/31
+  ip address 10.0.1.4/31
   ipv6 link-local fe80::1
   no shutdown
 

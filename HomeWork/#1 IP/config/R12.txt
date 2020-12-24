@@ -1,6 +1,6 @@
 
 !
-! Last configuration change at 17:20:23 EET Wed Dec 23 2020
+! Last configuration change at 11:30:13 EET Thu Dec 24 2020
 !
 version 15.2
 service timestamps debug datetime msec
@@ -58,14 +58,14 @@ interface Ethernet0/0
  no shutdown
  description N4
  no switchport
- ip address 10.0.0.19 255.255.255.254
+ ip address 192.168.4.19 255.255.255.254
  ipv6 address FE80::12 link-local
 !
 interface Ethernet0/1
  no shutdown
  description N5
  no switchport
- ip address 10.0.0.20 255.255.255.254
+ ip address 192.168.5.20 255.255.255.254
 !
 interface Ethernet0/2
  no shutdown
