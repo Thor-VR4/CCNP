@@ -192,16 +192,11 @@ round-trip min/avg/max = 26.639/37.611/54.227 ms
 
 
 
-NXOS7# ping6 2A03::6
-PING6 2a03::6 (2a03::6): 56 data bytes
-64 bytes from 2a03::6: icmp_seq=0 time=130.555 ms
-64 bytes from 2a03::6: icmp_seq=1 time=24.605 ms
-64 bytes from 2a03::6: icmp_seq=2 time=34.513 ms
-64 bytes from 2a03::6: icmp_seq=3 time=53.19 ms
-64 bytes from 2a03::6: icmp_seq=4 time=70.287 ms
-
---- 2a03::6 ping6 statistics ---
-5 packets transmitted, 5 packets received, 0.00% packet loss
-round-trip min/avg/max = 24.605/62.629/130.555 ms
+NXOS7# traceroute6  2A03::6
+traceroute to 2a03::6 (2a03::6), 30 hops max, 16 byte packets
+ 1  2a03::3  77.629 ms  12.94 ms  17.747 ms
+ 2  2a03::8  21.434 ms  22.204 ms  32.752 ms
+ 3  2a03::1  67.977 ms  24.032 ms  21.12 ms
+ 4  2a03::6  88.429 ms  38.549 ms  31.941 ms
 ```
 
