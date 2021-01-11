@@ -63,9 +63,6 @@ NXOS2# show ip route  ospf-2
     *via Null0, [220/40], 22:54:20, ospf-2, discard
 10.0.3.26/31, ubest/mbest: 1/0
     *via 10.1.0.9, Eth1/1, [110/90], 23:23:24, ospf-2, inter
-10.0.4.16/31, ubest/mbest: 2/0
-    *via 10.0.2.15, Eth1/3, [110/80], 23:28:18, ospf-2, intra
-    *via 10.0.2.22, Eth1/4, [110/80], 23:28:18, ospf-2, intra
 10.1.0.6/31, ubest/mbest: 1/0
     *via 10.1.0.9, Eth1/1, [110/50], 23:57:51, ospf-2, intra
 10.1.0.24/31, ubest/mbest: 1/0
@@ -132,8 +129,6 @@ Gateway of last resort is not set
 O IA     10.0.1.0/24 [110/50] via 10.1.0.6, 22:57:34, Ethernet0/0
 O IA     10.0.2.0/24 [110/50] via 10.1.0.8, 22:57:13, Ethernet0/1
 O IA     10.0.3.26/31 [110/50] via 10.1.0.25, 23:26:18, Ethernet0/2
-O IA     10.0.4.16/31 [110/90] via 10.1.0.8, 23:32:03, Ethernet0/1
-                      [110/90] via 10.1.0.6, 23:32:06, Ethernet0/0
       172.16.0.0/32 is subnetted, 8 subnets
 O IA     172.16.0.1 [110/11] via 10.1.0.6, 1d00h, Ethernet0/0
 O IA     172.16.0.2 [110/11] via 10.1.0.8, 1d00h, Ethernet0/1
