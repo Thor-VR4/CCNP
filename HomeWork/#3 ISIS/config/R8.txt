@@ -1,0 +1,145 @@
+
+!
+! Last configuration change at 16:31:08 EET Mon Jan 11 2021
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R8
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+clock timezone EET 2 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+no ip cef
+ipv6 unicast-routing
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ no shutdown
+ ip address 172.16.0.8 255.255.255.255
+ ip router isis 1
+ ipv6 address 2A03::8/128
+ ipv6 router isis 1
+!
+interface Ethernet0/0
+ no shutdown
+ description N1
+ ip address 10.1.0.7 255.255.255.254
+ ip router isis 1
+ ip ospf network point-to-point
+ ipv6 address FE80::8 link-local
+ ipv6 router isis 1
+ ospfv3 network point-to-point
+ isis network point-to-point 
+!
+interface Ethernet0/1
+ no shutdown
+ description N2
+ ip address 10.1.0.9 255.255.255.254
+ ip router isis 1
+ ip ospf network point-to-point
+ ipv6 address FE80::8 link-local
+ ipv6 router isis 1
+ ospfv3 network point-to-point
+ isis network point-to-point 
+!
+interface Ethernet0/2
+ no shutdown
+ description N3
+ ip address 10.1.0.24 255.255.255.254
+ ip router isis 1
+ ip ospf network point-to-point
+ ipv6 address FE80::8 link-local
+ ipv6 router isis 1
+ ospfv3 network point-to-point
+ isis network point-to-point 
+!
+interface Ethernet0/3
+ no shutdown
+ no ip address
+ shutdown
+!
+router isis 1
+ net 49.0001.0000.0000.0008.00
+ is-type level-2-only
+ metric-style wide
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+!
+end
