@@ -349,7 +349,12 @@ line console
 line vty
   exec-timeout 0
 boot nxos bootflash:/nxos.9.2.2.bin 
-
+router ospf 2
+  router-id 0.0.0.4
+  area 0.0.0.1 stub
+router ospfv3 1
+  router-id 0.0.0.4
+  area 0.0.0.1 stub
 
 !
 
