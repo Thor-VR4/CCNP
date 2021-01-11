@@ -1,8 +1,8 @@
 
 
 !Command: show running-config
-!Running configuration last done at: Wed Jan  6 11:05:50 2021
-!Time: Wed Jan  6 11:05:51 2021
+!Running configuration last done at: Mon Jan 11 13:06:00 2021
+!Time: Mon Jan 11 13:06:01 2021
 
 version 9.2(2) Bios:version  
 hostname NXOS4
@@ -17,6 +17,7 @@ vdc NXOS4 id 1
 
 feature ospf
 feature ospfv3
+feature isis
 
 no password strength-check
 username admin password 5 $5$andQDMhp$IF6Nx8XNIAkPFlDDU48s1lqBVvkDKtrqtCuW8us0O33  role network-admin
@@ -73,10 +74,6 @@ interface Ethernet1/4
   medium p2p
   ip address 10.0.4.16/31
   ipv6 link-local fe80::4
-  ip ospf network point-to-point
-  ip router ospf 2 area 0.0.0.1
-  ospfv3 network point-to-point
-  ipv6 router ospfv3 1 area 0.0.0.1
   no shutdown
 
 interface Ethernet1/5
@@ -352,13 +349,6 @@ line console
 line vty
   exec-timeout 0
 boot nxos bootflash:/nxos.9.2.2.bin 
-router ospf 2
-  router-id 0.0.0.4
-  area 0.0.0.1 stub
-router ospfv3 1
-  router-id 0.0.0.4
-  area 0.0.0.1 stub
-  address-family ipv6 unicast
 
 
 !
