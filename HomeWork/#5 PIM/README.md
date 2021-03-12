@@ -52,3 +52,50 @@ Reply to request 6 from 192.168.6.13, 476 ms
 Reply to request 6 from 192.168.6.13, 509 ms
 R12#
 ```
+Информация о группах на NXOS1:
+```
+NXOS1# show ip mroute 
+IP Multicast Routing Table for VRF "default"
+
+(*, 232.0.0.0/8), uptime: 00:48:55, pim ip 
+  Incoming interface: Null, RPF nbr: 0.0.0.0
+  Outgoing interface list: (count: 0)
+
+
+(*, 234.5.2.1/32), uptime: 00:14:33, pim ip 
+  Incoming interface: loopback1, RPF nbr: 10.10.10.10
+  Outgoing interface list: (count: 1)
+    Ethernet1/2, uptime: 00:14:32, pim
+
+
+(192.168.4.19/32, 234.5.2.1/32), uptime: 00:09:00, pim mrib ip 
+  Incoming interface: Ethernet1/3, RPF nbr: 10.0.1.3, internal
+  Outgoing interface list: (count: 1)
+    Ethernet1/2, uptime: 00:09:00, pim
+
+
+(192.168.5.20/32, 234.5.2.1/32), uptime: 00:09:00, pim mrib ip 
+  Incoming interface: Ethernet1/4, RPF nbr: 10.0.1.5, internal
+  Outgoing interface list: (count: 0)
+```
+Информация о группах на NXOS2:
+```
+NXOS2# show ip mroute 
+IP Multicast Routing Table for VRF "default"
+
+(*, 232.0.0.0/8), uptime: 00:32:14, pim ip 
+  Incoming interface: Null, RPF nbr: 0.0.0.0
+  Outgoing interface list: (count: 0)
+
+
+(192.168.4.19/32, 234.5.2.1/32), uptime: 00:08:53, pim ip 
+  Incoming interface: Ethernet1/3, RPF nbr: 10.0.2.15, internal
+  Outgoing interface list: (count: 0)
+
+
+(192.168.5.20/32, 234.5.2.1/32), uptime: 00:08:53, pim ip 
+  Incoming interface: Ethernet1/4, RPF nbr: 10.0.2.22, internal
+  Outgoing interface list: (count: 1)
+    Ethernet1/2, uptime: 00:08:53, pim
+
+```
