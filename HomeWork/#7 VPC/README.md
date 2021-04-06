@@ -1,4 +1,4 @@
-# VxLAN. VPC
+# VxLAN. VPC & VxLAN EVPN route-type 5
 Лабараторное задание №7.
 
 ## Задание
