@@ -3,7 +3,7 @@
 
 ## Задание
 1. [Настроить VPC между 2 устройствами](#chapter-0)
-2. [Настроить Overlay на основе VxLAN EVPN route-type 5](#chapter-1
+2. [Настроить Overlay на основе VxLAN EVPN route-type 5](#chapter-1)
 ![alt-текст](https://github.com/Thor-VR4/CCNP/blob/main/HomeWork/%237%20VPC/VPC.jpg "Стенд №1")
 
 <a id="chapter-0"></a>
