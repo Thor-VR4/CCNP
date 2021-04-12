@@ -1,109 +1,118 @@
-# VxLAN. L2VNI
-Лабараторное задание №6.
+# VxLAN. Multipod
+Лабараторное задание №8.
 
 ## Задание
-1. [Настроить Overlay на основе VxLAN EVPN для L2 связанности между клиентами](#chapter-0)
-![alt-текст](https://github.com/Thor-VR4/CCNP/blob/main/HomeWork/%231%20IP/Net.png "Стенд №1")
+Настроить связанность по технологии Multipod
+1. [Настроите BGP peering между Spine в одной зоне и во второй](#chapter-0)
+2. [Настроите route-type 2 и route-type 5 между всеми Leaf](#chapter-0)
+![alt-текст](https://github.com/Thor-VR4/CCNP/blob/main/HomeWork/%238%20Multipod/Multipod.jpg "Стенд №1")
 
 <a id="chapter-0"></a>
-## Настроить Overlay на основе VxLAN EVPN для L2 связанности между клиентами
-Сначала настраиваем BGP peering между Leaf и Spine в AF l2vpn evpn.  
-Пример настройки на SPINE:
+## Настроите BGP peering между Spine в одной зоне и во второй
+Настраиваем BGP peering между AS65000 и AS65001.  
+Пример настройки на NXOS6:
 ```
-router bgp 65000
-  template peer LEAF
-    remote-as 65000
-    update-source loopback0
-    address-family l2vpn evpn
-      send-community
-      send-community extended
-      route-reflector-client
-  neighbor 172.16.0.4
-    inherit peer LEAF
-  neighbor 172.16.0.5
-    inherit peer LEAF
-  neighbor 172.16.0.6
-    inherit peer LEAF
-```
-Пример настройки на LEAF:
-```
-router bgp 65000
+route-map UNCHANGED permit 10
+  set ip next-hop unchanged
+router bgp 65001
   template peer SPINE
     remote-as 65000
     update-source loopback0
+    ebgp-multihop 2
     address-family l2vpn evpn
       send-community
       send-community extended
+      route-map UNCHANGED out
   neighbor 172.16.0.1
     inherit peer SPINE
   neighbor 172.16.0.2
     inherit peer SPINE
+  vrf R9
+    address-family ipv4 unicast
+      network 192.168.4.0/24
 ```
-Настраиваем evpn и клиентский vlan:
+Состояния соседства:
 ```
-evpn
-  vni 10004 l2
-    rd auto
-    route-target import auto
-    route-target export auto
-fabric forwarding anycast-gateway-mac 0000.0000.1111
-interface Vlan4
-  no shutdown
-  ip address 192.168.0.1/24
-  fabric forwarding mode anycast-gateway
+NXOS6# show bgp l2vpn evpn summary 
+BGP summary information for VRF default, address family L2VPN EVPN
+BGP router identifier 172.16.0.6, local AS number 65001
+BGP table version is 19, L2VPN EVPN config peers 2, capable peers 2
+8 network entries and 12 paths using 2256 bytes of memory
+BGP attribute entries [8/1312], BGP AS path entries [1/6]
+BGP community entries [0/0], BGP clusterlist entries [0/0]
 
-interface nve1
-  no shutdown
-  host-reachability protocol bgp
-  source-interface loopback1
-  member vni 10004
-    ingress-replication protocol bgp
+Neighbor        V    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+172.16.0.1      4 65000      45      32       19    0    0 00:18:56 4         
+172.16.0.2      4 65000      44      32       19    0    0 00:17:30 4         
 ```
 
 
 <a id="chapter-1"></a>
-## Проверка роботоспособности
+## Настроите route-type 2 и route-type 5 между всеми Leaf
 
-На R9 проверяем L2 связанность с R12:
+Для настройки VxLAN в режиме Multipod необходимо задать route-targed метки на LEAF:
 ```
-R9#ping 192.168.0.12
-Type escape sequence to abort.
-Sending 5, 100-byte ICMP Echos to 192.168.0.12, timeout is 2 seconds:
-!!!!!
+vrf context R9
+  vni 99000
+  rd auto
+  address-family ipv4 unicast
+    route-target import 9999:99000
+    route-target import 9999:99000 evpn
+    route-target export 9999:99000
+    route-target export 9999:99000 evpn
+    route-target both auto
+    route-target both auto evpn
 ```
 Вывод BGP AF l2vpn на NXOS6:
 ```
-NXOS6# show bgp l2vpn evpn
-BGP routing table information for VRF default, address family L2VPN EVPN
-BGP table version is 66, Local Router ID is 172.16.0.6
-Status: s-suppressed, x-deleted, S-stale, d-dampened, h-history, *-valid, >-best
-Path type: i-internal, e-external, c-confed, l-local, a-aggregate, r-redist, I-injected
-Origin codes: i - IGP, e - EGP, ? - incomplete, | - multipath, & - backup, 2 - best2
-
    Network            Next Hop            Metric     LocPrf     Weight Path
-Route Distinguisher: 172.16.0.4:32771
-* i[2]:[0]:[0]:[48]:[aabb.cc00.c000]:[0]:[0.0.0.0]/216
-                      172.17.0.4                        100          0 i
-*>i                   172.17.0.4                        100          0 i
-* i[2]:[0]:[0]:[48]:[aabb.cc00.c000]:[32]:[192.168.0.12]/248
-                      172.17.0.4                        100          0 i
-*>i                   172.17.0.4                        100          0 i
-*>i[3]:[0]:[32]:[172.17.0.4]/88
-                      172.17.0.4                        100          0 i
-* i                   172.17.0.4                        100          0 i
+Route Distinguisher: 172.16.0.4:5
+* e[5]:[0]:[0]:[24]:[192.168.44.0]/224
+                      172.17.1.4                                     0 65000 i
+*>e                   172.17.1.4                                     0 65000 i
+
+Route Distinguisher: 172.16.0.4:32811
+* e[2]:[0]:[0]:[48]:[aabb.cc80.c000]:[32]:[192.168.44.12]/272
+                      172.17.1.4                                     0 65000 i
+*>e                   172.17.1.4                                     0 65000 i
+
+Route Distinguisher: 172.16.0.5:4
+* e[5]:[0]:[0]:[24]:[192.168.44.0]/224
+                      172.17.1.4                                     0 65000 i
+*>e                   172.17.1.4                                     0 65000 i
+
+Route Distinguisher: 172.16.0.5:32811
+* e[2]:[0]:[0]:[48]:[aabb.cc80.c000]:[32]:[192.168.44.12]/272
+                      172.17.1.4                                     0 65000 i
+*>e                   172.17.1.4                                     0 65000 i
 
 Route Distinguisher: 172.16.0.6:32771    (L2VNI 10004)
 *>l[2]:[0]:[0]:[48]:[aabb.cc00.9000]:[0]:[0.0.0.0]/216
                       172.17.0.6                        100      32768 i
-*>i[2]:[0]:[0]:[48]:[aabb.cc00.c000]:[0]:[0.0.0.0]/216
-                      172.17.0.4                        100          0 i
-*>l[2]:[0]:[0]:[48]:[aabb.cc00.9000]:[32]:[192.168.0.9]/248
+*>l[2]:[0]:[0]:[48]:[aabb.cc00.9000]:[32]:[192.168.4.9]/272
                       172.17.0.6                        100      32768 i
-*>i[2]:[0]:[0]:[48]:[aabb.cc00.c000]:[32]:[192.168.0.12]/248
-                      172.17.0.4                        100          0 i
-*>i[3]:[0]:[32]:[172.17.0.4]/88
-                      172.17.0.4                        100          0 i
 *>l[3]:[0]:[32]:[172.17.0.6]/88
                       172.17.0.6                        100      32768 i
+
+Route Distinguisher: 172.16.0.6:3    (L3VNI 99000)
+*>l[5]:[0]:[0]:[24]:[192.168.4.0]/224
+                      172.17.0.6                        100      32768 i
+
 ```
-P.S. В записи "i[2]:[0]:[0]:[48]:[aabb.cc00.c000]:[32]:[192.168.0.12]/248" [48] или [32] скорее всего указывают на рамер поля данных за ними. Так же в записях без ip адреса значение равно [0]
+
+## Проверка роботоспособности
+
+Таблица адресации:
+Устройство | VLAN | VNI | IPv4 
+--- | --- | --- | --- 
+R9 | 4 | 10004 | 192.168.4.9 
+R12 | 44 | 10044 | 192.168.44.12
+
+Доступность R9 c R12:
+```
+R12#ping 192.168.4.9
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 192.168.4.9, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 49/130/316 ms
+```
